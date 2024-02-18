@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use dotenv::dotenv;
 use serde_json;
 use std::collections::HashMap;
