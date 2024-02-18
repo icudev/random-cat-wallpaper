@@ -621,7 +621,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "random-cat-wp"
+name = "random-cat-wallpaper"
 version = "1.0.0"
 dependencies = [
  "dotenv",
