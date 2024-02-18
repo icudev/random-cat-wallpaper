@@ -1,4 +1,3 @@
-use dirs;
 use dotenv::dotenv;
 use serde_json;
 use std::collections::HashMap;
@@ -31,11 +30,6 @@ fn main() {
     loop {
         if let Some(image_url) = get_image(&api_key) {
             wallpaper::set_from_url(&image_url).unwrap();
-
-            // Remove temporary wallpaper file
-            let cache_dir = dirs::cache_dir().ok_or("no cache dir").unwrap();
-            let file_path = cache_dir.join("wallpaper");
-            std::fs::remove_file(file_path).unwrap();
         }
 
         std::thread::sleep(std::time::Duration::from_secs(3600));
