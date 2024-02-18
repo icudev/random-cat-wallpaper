@@ -671,7 +671,7 @@ dependencies = [
 
 [[package]]
 name = "random-cat-wp"
-version = "1.0.0"
+version = "1.1.0"
 dependencies = [
  "dirs 5.0.1",
  "dotenv",
