@@ -8,19 +8,22 @@ use wallpaper;
 fn get_image(api_key: &String) -> Option<String> {
     let client = reqwest::blocking::Client::new();
 
-    if let Ok(res) = client
-        .get("https://api.thecatapi.com/v1/images/search")
-        .header("x-api-key", api_key)
-        .send()
-        {
-            let response: String = res.text().unwrap();
+    if
+        let Ok(res) = client
+            .get("https://api.thecatapi.com/v1/images/search")
+            .header("x-api-key", api_key)
+            .send()
+    {
+        let response: String = res.text().unwrap();
 
-            let json: Vec<HashMap<String, serde_json::Value>> = serde_json::from_str(&response).unwrap();
-            let image_url: String = json[0]["url"].to_string().replace("\"", "");
+        let json: Vec<HashMap<String, serde_json::Value>> = serde_json
+            ::from_str(&response)
+            .unwrap();
+        let image_url: String = json[0]["url"].to_string().replace("\"", "");
 
-            return Some(image_url);
-        }
-    
+        return Some(image_url);
+    }
+
     return None;
 }
 
