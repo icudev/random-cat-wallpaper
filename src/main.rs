@@ -1,11 +1,11 @@
 #![windows_subsystem = "windows"]
 
-use dotenv::dotenv;
+use reqwest;
 use serde_json;
 use std::collections::HashMap;
 use wallpaper;
 
-fn get_image(api_key: &String) -> Option<String> {
+fn get_image(api_key: &str) -> Option<String> {
     let client = reqwest::blocking::Client::new();
 
     if
@@ -28,9 +28,7 @@ fn get_image(api_key: &String) -> Option<String> {
 }
 
 fn main() {
-    dotenv().ok();
-
-    let api_key: String = std::env::var("THECATAPI_KEY").expect("Couldn\'t find api key in .env");
+    let api_key: &str = "your-api-key-here";  // Replace with your API key
 
     loop {
         if let Some(image_url) = get_image(&api_key) {
