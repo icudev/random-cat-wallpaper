@@ -1,21 +1,18 @@
 #![windows_subsystem = "windows"]
 
-use reqwest;
-use serde_json;
+use reqwest::blocking::Client;
 use std::collections::HashMap;
-use wallpaper;
 
-fn get_image(api_key: &str) -> Option<String> {
-    let client = reqwest::blocking::Client::new();
+const API_KEY: &str = "live_******"; // Replace with your API key
 
+fn get_image_url(client: &Client) -> Option<String> {
     if
         let Ok(res) = client
             .get("https://api.thecatapi.com/v1/images/search")
-            .header("x-api-key", api_key)
+            .header("x-api-key", API_KEY)
             .send()
     {
         let response: String = res.text().unwrap();
-
         let json: Vec<HashMap<String, serde_json::Value>> = serde_json
             ::from_str(&response)
             .unwrap();
@@ -24,14 +21,14 @@ fn get_image(api_key: &str) -> Option<String> {
         return Some(image_url);
     }
 
-    return None;
+    None
 }
 
 fn main() {
-    let api_key: &str = "your-api-key-here";  // Replace with your API key
+    let client = Client::new();
 
     loop {
-        if let Some(image_url) = get_image(&api_key) {
+        if let Some(image_url) = get_image_url(&client) {
             wallpaper::set_from_url(&image_url).unwrap();
         }
 
