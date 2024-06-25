@@ -16,7 +16,7 @@ fn get_image_url(client: &Client) -> Option<String> {
         let json: Vec<HashMap<String, serde_json::Value>> = serde_json
             ::from_str(&response)
             .unwrap();
-        let image_url: String = json[0]["url"].to_string().replace("\"", "");
+        let image_url: String = json[0]["url"].to_string().replace('"', "");
 
         return Some(image_url);
     }
