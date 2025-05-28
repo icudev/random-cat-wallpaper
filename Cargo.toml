@@ -1,12 +1,12 @@
 [package]
 name = "random-cat-wallpaper"
-version = "1.1.0"
+version = "1.1.1"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-reqwest = { version = "0.11.24", features = ["blocking"] }
-serde = { version = "1.0.203", features = ["derive"] }
-serde_json = "1.0.113"
+reqwest = { version = "0.12.15", features = ["blocking"] }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
 wallpaper = { version = "3.2.0", features=["from_url"] }
