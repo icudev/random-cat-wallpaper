@@ -1,37 +1,41 @@
 #![windows_subsystem = "windows"]
 
 use reqwest::blocking::Client;
-use std::collections::HashMap;
+use std::{ thread, time::Duration };
 
-const API_KEY: &str = "live_******"; // Replace with your API key
+const API_URL: &str = "https://api.thecatapi.com/v1/images/search";
 
-fn get_image_url(client: &Client) -> Option<String> {
-    if
-        let Ok(res) = client
-            .get("https://api.thecatapi.com/v1/images/search")
-            .header("x-api-key", API_KEY)
-            .send()
-    {
-        let response: String = res.text().unwrap();
-        let json: Vec<HashMap<String, serde_json::Value>> = serde_json
-            ::from_str(&response)
-            .unwrap();
-        let image_url: String = json[0]["url"].to_string().replace('"', "");
 
-        return Some(image_url);
+#[derive(serde::Deserialize)]
+struct ImageData {
+    url: String,
+}
+
+fn get_image_url(client: &Client) -> Option<String>  {
+    let res = client
+        .get(API_URL)
+        .send()
+        .ok()?;
+
+    if !res.status().is_success() {
+        return None;
     }
 
-    None
+    let body = res.text().ok()?;
+    let image_list: Vec<ImageData> = serde_json::from_str(&body).ok()?;
+    let image = image_list.into_iter().next()?;
+
+    Some(image.url)
 }
 
 fn main() {
-    let client = Client::new();
+    let http_client = Client::new();
 
     loop {
-        if let Some(image_url) = get_image_url(&client) {
-            wallpaper::set_from_url(&image_url).unwrap();
+        if let Some(image_url) = get_image_url(&http_client) {
+            let _ = wallpaper::set_from_url(&image_url);
         }
 
-        std::thread::sleep(std::time::Duration::from_secs(3600));
+        thread::sleep(Duration::from_secs(3600));
     }
 }
